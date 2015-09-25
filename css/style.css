@@ -1,0 +1,103 @@
+/** {
+	margin:0px;
+	padding:0px;
+}
+.message-block {
+	margin: auto;
+	display: block;
+	position: absolute;
+	top: 20%; left: 0; right: 0;
+	height:60%;
+	text-align:center;
+	background-color:rgba(224, 73, 70, 0.81);
+	display:none;
+	line-height: 100px;
+	text-align: center;
+}
+.schedule {
+	margin: auto;
+	display: block;
+	position: absolute;
+	top: 20%; left: 0; right: 0;
+	height:60%;
+	text-align:left;
+	background-color:rgba(0,0,0, 0.5);
+	color:rgba(255,255,255,0.9);
+	font-family: 'Source Code Pro';
+	-webkit-text-stroke: 1px black;
+	vertical-align: bottom;
+	text-shadow:
+	-1px -1px 0 #000,  
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+}
+.message {
+	margin-left:auto;
+	margin-right:auto;
+	display:inline-block;
+	vertical-align: middle;
+	line-height: normal;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 300;
+	width: 80%;
+	font-size: 5em;
+}
+body {
+	background-color: gray;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+#tick2 {
+	display:block;
+	position:absolute;
+	right:0;
+	bottom:0;
+	color:rgba(255,255,255,0.9);
+	font-family: 'Source Code Pro';
+	-webkit-text-stroke: 1px black;
+	vertical-align: bottom;
+	text-shadow:
+	3px 3px 0 rgba(0,0,0,0.5),
+	-1px -1px 0 #000,  
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+}
+
+.room {
+	display:block;
+	position:absolute;
+	left:0;
+	bottom:0;
+	color:rgba(255,255,255,0.9);
+	font-family: 'Source Code Pro';
+	-webkit-text-stroke: 1px black;
+	text-shadow:
+	3px 3px 0 rgba(0,0,0,0.5),
+	-1px -1px 0 #000,  
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+}
+.scroller {
+	display:block;
+	display:none;
+	background-color:rgba(0,0,0,0.6);
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	color:rgba(255,255,255,0.9);
+	font-family: 'Source Sans Pro';
+	font-weight:400;
+	-webkit-text-stroke: 1px black;
+	text-shadow:
+	3px 3px 0 rgba(0,0,0,0.5),
+	-1px -1px 0 #000,  
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+}*/
