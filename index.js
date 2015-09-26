@@ -18,7 +18,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/secret', function(req, res){
-  res.sendFile(path.join(__dirname, './', 'secret.html'));
+  res.sendFile(path.join(__dirname, './secret', 'secret.html'));
 });
 
 app.get('/mespeak.js', function(req, res){
