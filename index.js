@@ -17,6 +17,10 @@ app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, './', 'index.html'));
 });
 
+app.get('/js/index.js', function(req, res){
+  res.sendFile(path.join(__dirname, './js', 'index.js'));
+});
+
 app.get('/secret', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'index.html'));
 });
