@@ -71,7 +71,14 @@ app.get('/reg', function(req, res) {
 });
 
 function makeID() {
-	return Math.random().toString(36).substring(2);
+	// get latest id
+	var maxid = 0;
+	for (var i = 0; i < messageArchive.length; i++) {
+		maxid = Math.max(messageArchive[i].id, maxid);
+	}
+	// if no id was found, the starting id is 1.
+	maxid++;
+	return maxid;
 }
 
 //socket.io stuff
