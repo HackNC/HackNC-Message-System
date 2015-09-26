@@ -66,7 +66,9 @@ io.on('connection', function(socket){
   socket.on('message', function(msg){
 	console.log("message:", msg);
 	if (msg.pass===secret.pass) {
-		io.emit("message", msg.message);
+		// delete pass
+		delete msg['pass'];
+		io.emit("message", msg);
 		msg.id = makeID();
 		notificate = new gcm.Message({
 			data: {
@@ -82,8 +84,6 @@ io.on('connection', function(socket){
 			if (err) { console.error("send error", err);return;}
 			console.log("send result", result);
 		});
-		// delete pass
-		delete msg['pass'];
 		messageArchive.push(msg);
 		fs.writeFile('archive.txt', JSON.stringify(messageArchive),  function(err) {
 			if (err) {
