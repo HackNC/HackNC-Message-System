@@ -5,23 +5,15 @@ socket.on('message', function(msg){
 	if (msg === "refresh") {
 		location.reload(true);
 	} else {
-		appendMessage(msg);
-		$('#message').text(msg);
-		$('#blocko').textfill({maxFontPixels:0});
-
-		if (!chromaMode){
-			timeouts.push(setTimeout(function(){
-				$('#blocko').fadeOut(2000);
-				$('#schedule').fadeIn(2000);
-				$('#scroller').fadeOut(2000);
-			}, 300000));
-		} else {
-			timeouts.push(setTimeout(function(){
-				$('#blocko').fadeOut(2000);
-			}, 60000));
-		}
+		addMessage(msg);
 	}
 });
+
+// Add a message
+var addMessage = function(msg) {
+  var elem = messageTemplate.format(msg.message);
+  $('#messages').prepend(elem);
+};
 
 // Room label
 var room = window.localStorage.room;
@@ -46,7 +38,7 @@ Credit MUST stay intact for use
 such script kiddie very wow
 */
 
-function show2(){
+var show2 = function() {
 	if (!document.all&&!document.getElementById)
 		return
 	thelement=document.getElementById? document.getElementById("tick2"): document.all.tick2
@@ -68,8 +60,22 @@ function show2(){
 	var ctime=hours+":"+minutes+":"+seconds+"&nbsp;"+dn
 	thelement.innerHTML="<span>" + ctime + "</span>";
 	setTimeout("show2()",1000)
-}
+};
 window.onload=show2;
+
+// String format
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match;
+    });
+  };
+}
+
+var messageTemplate = '<div class="panel panel-default"><div class="panel-body">\'{0}\'</div></div>';
 
 ////////////////////////////
 
