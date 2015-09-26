@@ -21,6 +21,18 @@ app.get('/secret', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'index.html'));
 });
 
+app.get('/js/secret.js', function(req, res){
+  res.sendFile(path.join(__dirname, './secret', 'js', 'secret.js'));
+});
+
+app.get('/js/messagePost.js', function(req, res){
+  res.sendFile(path.join(__dirname, './secret', 'js', 'messagePost.js'));
+});
+
+app.get('/js/arrive.js', function(req, res){
+  res.sendFile(path.join(__dirname, './secret', 'js', 'messagePost.js'));
+});
+
 app.get('/mespeak.js', function(req, res){
   res.sendFile(path.join(__dirname, './mespeak', 'mespeak.js'));
 });
@@ -48,37 +60,44 @@ app.get('/jquery.textfill.min.js', function(req, res){
 app.get('/reg', function(req, res) {
 	res.set("Content-Type", "text/plain")
 	res.send('id: ' + req.query.id);
-	regIDs.push(req.query.id);
+	regIDs[req.query.id] = true;
 	fs.writeFile('regids.txt', JSON.stringify(regIDs),  function(err) {
 		if (err) {
-			console.log("failed to write json");
+			console.error("failed to write json");
 		}
 	});
 
-	console.log(regIDs);
+	console.log("registered: ", req.query.id);
 });
 
 //socket.io stuff
 io.on('connection', function(socket){
   socket.on('message', function(msg){
-	console.log(msg);
+	console.log("message:", msg);
 	if (msg.pass===secret.pass) {
 		io.emit("message", msg.msg);
-		notificate = new gcm.Message();
-		notificate.addData("message", msg.msg);
-		notificate.addData("title", msg.subject);
-		sender.send(notificate, regIDs, 4, function(result) {
-			console.log(result);
+		notificate = new gcm.Message({
+			data: {
+				key1: 'message1'
+			},
+			notification: {
+				title: msg.subject,
+				body: msg.msg
+			}
+		});
+		sender.send(notificate, Object.keys(regIDs), 5, function(err, result) {
+			if (err) { console.error("send error", err);return;}
+			console.log("send result", result);
 		});
 		msg.pass="";
 		messageArchive.push(msg);
 		fs.writeFile('archive.txt', JSON.stringify(messageArchive),  function(err) {
 			if (err) {
-				console.log("failed to write json");
+				console.error("failed to write json");
 			}
 		});
 	} else {
-		console.log("wow");
+		console.error("invalid password");
 		socket.emit("message", {'error':"invalid password"});
 	};
 	
