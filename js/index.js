@@ -1,31 +1,31 @@
 var socket = io.connect('159.203.73.64:9001');
 
-// socket.on('message', function(msg){
-// 	console.log(msg);
-// 	if (msg === "refresh") {
-// 		location.reload(true);
-// 	} else {
-// 		if (!chromaMode){
-// 			$('#schedule').fadeOut(100);
-// 			$('#scroller').slideDown(700);
-// 		}
-// 		$('#blocko').fadeIn(2000);
-// 		$('#message').text(msg);
-// 		$('#blocko').textfill({maxFontPixels:0});
+socket.on('message', function(msg){
+	console.log(msg);
+	if (msg === "refresh") {
+		location.reload(true);
+	} else {
+		if (!chromaMode){
+			$('#schedule').fadeOut(100);
+			$('#scroller').slideDown(700);
+		}
+		$('#blocko').fadeIn(2000);
+		$('#message').text(msg);
+		$('#blocko').textfill({maxFontPixels:0});
 
-// 		if (!chromaMode){
-// 			timeouts.push(setTimeout(function(){
-// 				$('#blocko').fadeOut(2000);
-// 				$('#schedule').fadeIn(2000);
-// 				$('#scroller').fadeOut(2000);
-// 			}, 300000));
-// 		} else {
-// 			timeouts.push(setTimeout(function(){
-// 				$('#blocko').fadeOut(2000);
-// 			}, 60000));
-// 		}
-// 	}
-// });
+		if (!chromaMode){
+			timeouts.push(setTimeout(function(){
+				$('#blocko').fadeOut(2000);
+				$('#schedule').fadeIn(2000);
+				$('#scroller').fadeOut(2000);
+			}, 300000));
+		} else {
+			timeouts.push(setTimeout(function(){
+				$('#blocko').fadeOut(2000);
+			}, 60000));
+		}
+	}
+});
 
 // Room label
 var room = window.localStorage.room;
