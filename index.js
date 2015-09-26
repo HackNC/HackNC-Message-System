@@ -70,26 +70,33 @@ app.get('/reg', function(req, res) {
 	console.log("registered: ", req.query.id);
 });
 
+function makeID() {
+	return Math.random().toString(36).substring(2);
+}
+
 //socket.io stuff
 io.on('connection', function(socket){
   socket.on('message', function(msg){
 	console.log("message:", msg);
 	if (msg.pass===secret.pass) {
-		io.emit("message", msg.msg);
+		io.emit("message", msg.message);
+		msg.id = makeID();
 		notificate = new gcm.Message({
 			data: {
-				key1: 'message1'
+				id: msg.id
 			},
+			// remove the `notification` stuff to get a silent push.
 			notification: {
 				title: msg.subject,
-				body: msg.msg
+				body: msg.message
 			}
 		});
 		sender.send(notificate, Object.keys(regIDs), 5, function(err, result) {
 			if (err) { console.error("send error", err);return;}
 			console.log("send result", result);
 		});
-		msg.pass="";
+		// delete pass
+		delete msg['pass'];
 		messageArchive.push(msg);
 		fs.writeFile('archive.txt', JSON.stringify(messageArchive),  function(err) {
 			if (err) {
