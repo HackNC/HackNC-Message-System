@@ -5,11 +5,11 @@ var messagePost = function() {
     alert("Must fill out subject and message. Not sent.");
     return false;
   }
-  socket.emit('message', 
-	  {message:	$('#m').val(),
-	   subject:	$('#s').val(),
-	   pass:	$('#pass').val(),
-	   level:	$('#level').checked,
-	  });
+  socket.emit('message', {
+    message: $('#m').val(),
+	  subject: $('#s').val(),
+	  pass:	   $('#pass').val(),
+	  level:	 $('#level').checked,
+	});
   return false;
 };

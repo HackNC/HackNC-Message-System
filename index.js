@@ -37,30 +37,6 @@ app.get('/js/arrive.js', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'js', 'messagePost.js'));
 });
 
-app.get('/mespeak.js', function(req, res){
-  res.sendFile(path.join(__dirname, './mespeak', 'mespeak.js'));
-});
-
-app.get('/mespeak_config.json', function(req, res){
-  res.sendFile(path.join(__dirname, './mespeak', 'mespeak_config.json'));
-});
-
-app.get('/en-us.json', function(req, res){
-  res.sendFile(path.join(__dirname, './mespeak/voices/en', 'en-us.json'));
-});
-
-app.get('/s.ogg', function(req, res){
-  res.sendFile(path.join(__dirname, './', 's.ogg'));
-});
-
-app.get('/green.png', function(req, res){
-  res.sendFile(path.join(__dirname, './', 'green.png'));
-});
-
-app.get('/jquery.textfill.min.js', function(req, res){
-  res.sendFile(path.join(__dirname, './', 'jquery.textfill.min.js'));
-});
-
 app.get('/reg', function(req, res) {
 	res.set("Content-Type", "text/plain")
 	res.send('id: ' + req.query.id);

@@ -5,11 +5,7 @@ socket.on('message', function(msg){
 	if (msg === "refresh") {
 		location.reload(true);
 	} else {
-		if (!chromaMode){
-			$('#schedule').fadeOut(100);
-			$('#scroller').slideDown(700);
-		}
-		$('#blocko').fadeIn(2000);
+		appendMessage(msg);
 		$('#message').text(msg);
 		$('#blocko').textfill({maxFontPixels:0});
 
