@@ -9,7 +9,7 @@ var messagePost = function() {
     message: $('#m').val(),
 	  subject: $('#s').val(),
 	  pass:	   $('#pass').val(),
-	  level:	 $('#level').checked,
+	  level:	 $('input:radio[name=level]:checked').val()
 	});
   return false;
 };
