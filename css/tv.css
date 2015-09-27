@@ -1,0 +1,21 @@
+h1, h2, h3, h4, p, h3.panel-title, div.panel-body {
+  font-size: 7em;
+}
+
+nav li {
+  font-size: 4.2em;
+  margin-top: .1em;
+  margin-bottom: .1em;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-image: url(../images/hacknc.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}

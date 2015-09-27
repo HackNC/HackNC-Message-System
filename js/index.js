@@ -32,8 +32,11 @@ if (room) {
 } else {
 	$("#room").text("Welcome to HackNC");			
 }
+
+// Set room
 $(document).keydown(function(event) {
-	if (event.which === 82) { // 'r'
+	console.log(event);
+	if (event.which === 82 && event.shiftKey) { // 'shift + r'
 		var roomName = window.prompt("What room is this?", "SN014");
 		$("#room").text("You're in " + roomName);
 		window.localStorage.room = roomName;
@@ -87,7 +90,50 @@ if (!String.prototype.format) {
 
 var messageTemplate = '<div class="panel {0}"><div class="panel-heading"><h3 class="panel-title">{1}</h3></div><div class="panel-body">{2}</div></div>';
 
-////////////////////////////
+// Events loop
+var init = function() {
+
+}
+
+var populateSchedule = function(url) {	
+	var date = new Date(2015, 9, 10);
+	var day = '';
+	var $schedule = $('#schedule-list');
+	if (date.getYear() == 115 && date.getMonth() == 9) {
+		if (date.getDate() == 9) {
+			// Friday
+			day = 'friday';
+			$schedule.empty();
+		} else if (date.getDate() == 10) {
+			// Saturday
+			day = 'saturday';
+			$schedule.empty();
+		} else if (date.getDate() == 11) {
+			// Sunday
+			day = 'sunday';
+			$schedule.empty();
+		} else {
+			// Not HackNC
+			return;
+		}
+	} else {
+		// Not HackNC
+		return;
+	}
+  //get JSON
+  $.getJSON(url , function(data) {
+    for (var i =0 ; i<data.events.length ; i++){
+      thisEvent = data.events[i];
+      if (data.events[i].day.toLowerCase() == day){
+        $schedule.append("<li>" + thisEvent.starttime + " - " + thisEvent.endtime +  "  " + thisEvent.title + "</li>");
+      } 
+    }
+  });
+}
+
+$(document).ready(function() {
+	populateSchedule('https://www.hacknc.com/schedule/json/student.json');
+});
 
 // function getEvent() {
 // 	var currentTime = new Date();
