@@ -21,6 +21,14 @@ app.get('/js/index.js', function(req, res){
   res.sendFile(path.join(__dirname, './js', 'index.js'));
 });
 
+app.get('/css/tv.css', function(req, res){
+  res.sendFile(path.join(__dirname, './css', 'tv.css'));
+});
+
+app.get('/images/hacknc.png', function(req, res){
+  res.sendFile(path.join(__dirname, './images', 'hacknc.png'));
+});
+
 app.get('/secret', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'index.html'));
 });
