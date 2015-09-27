@@ -80,3 +80,5 @@ secretb.json
 index.html.save
 reg423ids.txt
 *.txt
+cert.pem
+key.pem
