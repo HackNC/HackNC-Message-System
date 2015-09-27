@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
+    "apn": "^1.7.4",
     "bl": "^0.9.3",
     "caseless": "^0.6.0",
     "express": "^4.13.3",
