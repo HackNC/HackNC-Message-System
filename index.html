@@ -8,7 +8,8 @@
 	<link rel="icon" href="https://www.hacknc.com/images/favicon.ico" type="image/x-icon" />
 	<!--Import bootstrap.css-->
 	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="https://www.hacknc.com/css/material-fullpalette.min.css" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material-fullpalette.min.css" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css" />
 	<!--Import HackNC overrides-->
 	<link type="text/css" rel="stylesheet" href="https://www.hacknc.com/css/hacknc.css" />
 	<link type="text/css" rel="stylesheet" href="css/tv.css" />
@@ -39,8 +40,7 @@
 				<div class="panel-heading">
 					<h1>Schedule</h1>
 				</div>
-				<div class="panel-body">
-					<ul id="schedule-list"></ul>
+				<div class="panel-body list-group" id="schedule-list">
 				</div>
 			</div>
 		</div>
@@ -75,9 +75,14 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/arrive.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.js"></script>
+	<script type="text/javascript">
+	    $.material.init();
+  </script>
 	<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

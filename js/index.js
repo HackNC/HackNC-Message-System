@@ -88,14 +88,15 @@ if (!String.prototype.format) {
 }
 
 var messageTemplate = '<div class="panel {0}"><div class="panel-heading"><h3 class="panel-title">{1}</h3></div><div class="panel-body">{2}</div></div>';
+var scheduleTemplate = '<div class="list-group-item"><div class="row-content"><h4 class="list-group-item-heading">{0}</h4><p class="list-group-item-text">{1}</p></div></div><div class="list-group-separator"></div>';
 
 // Events loop
 var init = function() {
 
 }
 
-var populateSchedule = function(url) {	
-	var date = new Date(2015, 9, 10);
+var populateSchedule = function(schedule) {	
+	var date = new Date(2015, 9, 10, 8, 59);
 	var day = '';
 	var $schedule = $('#schedule-list');
 	if (date.getYear() == 115 && date.getMonth() == 9) {
@@ -119,20 +120,172 @@ var populateSchedule = function(url) {
 		// Not HackNC
 		return;
 	}
-  //get JSON
-  $.getJSON(url , function(data) {
-    for (var i =0 ; i<data.events.length ; i++){
-      thisEvent = data.events[i];
-      if (data.events[i].day.toLowerCase() == day){
-        $schedule.append("<li>" + thisEvent.starttime + " - " + thisEvent.endtime +  "  " + thisEvent.title + "</li>");
-      } 
-    }
-  });
+  // display schedule
+  for (var i = 0; i < schedule.events.length; i++){
+  	//////////// This doesn't work yet..................
+  	console.log('schedule sorting doesn\'t work yet');
+    thisEvent = schedule.events[i];
+    var hour, mins, ampm;
+    if (thisEvent.endtime) {
+    	hour = thisEvent.endtime.split(':');
+	    mins = hour[1].split(' ');
+	    ampm = mins[1];
+    } else {
+			hour = thisEvent.starttime.split(':');
+	    mins = hour[1].split(' ');
+	    ampm = mins[1];
+    }  
+    if (schedule.events[i].day.toLowerCase() == day && 
+    	  hour[0] < ((date.getHours() % 12) + 1) &&
+        mins[0] < date.getMinutes() &&
+        (date.getHours() < 12 && ampm == 'am' || 
+        date.getHours >= 12 && ampm == 'pm')) {
+      $schedule.append(scheduleTemplate.format(thisEvent.starttime + " - " + thisEvent.endtime, thisEvent.title));
+    } 
+  }
 }
 
-$(document).ready(function() {
-	populateSchedule('https://www.hacknc.com/schedule/json/student.json');
-});
+var schedule = { "events" : [
+
+		{"starttime" : "5:00 PM", 
+		"endtime" : "11:59 PM",
+		"day" : "Friday",
+		"title": "Check-in"},
+	
+		{"starttime" : "5:30 PM", 
+		"endtime" : "7:00 PM",
+		"day" : "Friday",
+		"title": "Dinner is served"},
+		
+		{"starttime" : "6:00 PM", 
+		"endtime" : "6:50 PM",
+		"day" : "Friday",
+		"title": "Guest lectures"},
+	
+		{"starttime" : "7:30 PM", 
+		"endtime" : "8:20 PM",
+		"day" : "Friday",
+		"title": "Hardware event"},
+	
+		{"starttime" : "8:30 PM", 
+		"endtime" : "9:20 PM",
+		"day" : "Friday",
+		"title": "Team formation"},
+	
+		{"starttime" : "9:30 PM", 
+		"endtime" : "10:30 PM",
+		"day" : "Friday",
+		"title": "Snack time!"},
+	
+		{"starttime" : "10:00 PM", 
+		"endtime" : "7:00 AM",
+		"day" : "Friday",
+		"title": "Sleeping room is available"},
+	
+		{"starttime" : "6:30 AM", 
+		"endtime" : "8:45 AM",
+		"day" : "Saturday",
+		"title": "Breakfast is served"},
+	
+	  {"starttime" : "7:00 AM", 
+		"endtime" : " 8:45 AM",
+		"day" : "Saturday",
+		"title": "Check-in"},
+	
+		{"starttime" : "8:45 AM", 
+		"endtime" : " 2:50 PM",
+		"day" : "Saturday",
+		"title": "Late check-in"},
+		
+		{"starttime" : "9:00 AM", 
+		"endtime" : "9:50 AM",
+		"day" : "Saturday",
+		"title": "Keynote"},
+		
+		{"starttime" : "10:00 AM", 
+		"endtime" : "",
+		"day" : "Saturday",
+		"title": "Hacking begins!"},
+		
+		{"starttime" : "10:00 AM", 
+		"endtime" : "10:50 AM",
+		"day" : "Saturday",
+		"title": "Team formation"},
+	
+	  {"starttime" : "10:00 AM", 
+		"endtime" : " 1:50 PM",
+		"day" : "Saturday",
+		"title": "Sponsor fair"},
+		
+		{"starttime" : "11:00 AM", 
+		"endtime" : "6:00 PM",
+		"day" : "Saturday",
+		"title": "Tech talks"},
+		
+		{"starttime" : "11:45 AM", 
+		"endtime" : "1:00 PM",
+		"day" : "Saturday",
+		"title": "Lunch is served"},
+		
+		{"starttime" : "5:30 PM", 
+		"endtime" : "6:50 PM",
+		"day" : "Saturday",
+		"title": "Dinner is served"},
+		
+		{"starttime" : "7:00 PM", 
+		"endtime" : "11:00 PM",
+		"day" : "Saturday",
+		"title": "Mini-events for fun"},
+		
+		{"starttime" : "10:00 PM", 
+		"endtime" : "10:50 PM",
+		"day" : "Saturday",
+		"title": "Snack time!"},
+		
+		{"starttime" : "10:00 PM", 
+		"endtime" : "7:00 AM",
+		"day" : "Saturday",
+		"title": "Sleeping room available"},
+		
+		{"starttime" : "6:30 AM", 
+		"endtime" : "9:00 AM",
+		"day" : "Sunday",
+		"title": "Breakfast is served"},
+		
+		{"starttime" : "11:00 AM", 
+		"endtime" : "",
+		"day" : "Sunday",
+		"title": "Hacking ends!"},
+		
+		{"starttime" : "11:30 AM", 
+		"endtime" : "1:00 PM",
+		"day" : "Sunday",
+		"title": "Lunch is served"},
+		
+		{"starttime" : "12:30 PM", 
+		"endtime" : "1:50 PM",
+		"day" : "Sunday",
+		"title": "Demos and project presentations"},
+		
+		{"starttime" : "2:00 PM", 
+		"endtime" : "2:30 PM",
+		"day" : "Sunday",
+		"title": "Judges deliberate"},
+
+		{"starttime" : "2:30 PM", 
+		"endtime" : "3:50 PM",
+		"day" : "Sunday",
+		"title": "Prizes are awarded"},
+		
+		{"starttime" : "4:00 PM", 
+		"endtime" : "",
+		"day" : "Sunday",
+		"title": "Time to go home!"}
+	]
+};
+
+populateSchedule(schedule);
+
 
 // function getEvent() {
 // 	var currentTime = new Date();

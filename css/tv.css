@@ -1,5 +1,18 @@
-h1, h2, h3, h4, p, h3.panel-title, div.panel-body {
-  font-size: 7em;
+h1, h2, h3, div.panel-body {
+  font-size: 6em;
+}
+
+.panel-heading h1 {
+  font-size: 3em;
+}
+
+.list-group .list-group-item .list-group-item-heading {
+  font-size: 0.4em;
+  margin-top: .2em;
+}
+
+.list-group-item-text {
+  font-size: .75em;
 }
 
 nav li {
