@@ -11,7 +11,17 @@ socket.on('message', function(msg){
 
 // Add a message
 var addMessage = function(msg) {
-  var elem = messageTemplate.format(msg.message);
+	var panel_type;
+	if (msg.level == 'normal') {
+		panel_type = 'hacknc-panel';
+	} else if (msg.level == 'elevated') {
+		panel_type = 'panel-warning';
+	} else if (mst.level == 'emergency') {
+		panel_type = 'panel-danger';
+	} else {
+		panel_type = 'panel-primary';
+	}
+  var elem = messageTemplate.format(panel_type, msg.subject, msg.message);
   $('#messages').prepend(elem);
 };
 
@@ -75,7 +85,7 @@ if (!String.prototype.format) {
   };
 }
 
-var messageTemplate = '<div class="panel panel-default"><div class="panel-body">\'{0}\'</div></div>';
+var messageTemplate = '<div class="panel {0}"><div class="panel-heading"><h3 class="panel-title">{1}</h3></div><div class="panel-body">{2}</div></div>';
 
 ////////////////////////////
 
