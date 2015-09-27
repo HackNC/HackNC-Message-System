@@ -35,7 +35,6 @@ if (room) {
 
 // Set room
 $(document).keydown(function(event) {
-	console.log(event);
 	if (event.which === 82 && event.shiftKey) { // 'shift + r'
 		var roomName = window.prompt("What room is this?", "SN014");
 		$("#room").text("You're in " + roomName);
