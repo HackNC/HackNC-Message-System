@@ -16,7 +16,7 @@ var addMessage = function(msg) {
 		panel_type = 'hacknc-panel';
 	} else if (msg.level == 'elevated') {
 		panel_type = 'panel-warning';
-	} else if (mst.level == 'emergency') {
+	} else if (msg.level == 'emergency') {
 		panel_type = 'panel-danger';
 	} else {
 		panel_type = 'panel-primary';
