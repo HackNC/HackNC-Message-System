@@ -55,14 +55,14 @@ app.get('/js/arrive.js', function(req, res){
 app.get('/reg', function(req, res) {
 	res.set("Content-Type", "text/plain")
 	res.send('id: ' + req.query.id);
-	if (req.query.platform == 'google') {
+	if (req.query.platform == 'Android') {
 		regIDs.google[req.query.id] = true;
 		fs.writeFile('regids.txt', JSON.stringify(regIDs),  function(err) {
 			if (err) {
 				console.error("failed to write json");
 			}
 		});
-	} else if (req.query.platform == 'ios') {
+	} else if (req.query.platform == 'iOS') {
 		regIDs.ios[req.query.id] = true;
 		fs.writeFile('regids.txt', JSON.stringify(regIDs),  function(err) {
 			if (err) {
