@@ -142,6 +142,6 @@ app.get('/archive', function(req, res) {
 	res.send(JSON.stringify(messageArchive, null, '\t'));
 });
 
-http.listen(9001, function(){
+http.listen(80, function(){
   console.log('listening on *:80');
 });
