@@ -41,9 +41,26 @@ app.get('/secret', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'index.html'));
 });
 
+app.get('/mespeak.js', function(req, res){
+  res.sendFile(path.join(__dirname, './mespeak', 'mespeak.js'));
+});
+
+app.get('/mespeak_config.json', function(req, res){
+  res.sendFile(path.join(__dirname, './mespeak', 'mespeak_config.json'));
+});
+
+app.get('/en-us.json', function(req, res){
+  res.sendFile(path.join(__dirname, './mespeak/voices/en', 'en-us.json'));
+});
+
 app.get('/js/secret.js', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'js', 'secret.js'));
 });
+
+app.get('/js/jquery.charactercounter.js', function(req, res){
+  res.sendFile(path.join(__dirname, './secret', 'js', 'jquery.charactercounter.js'));
+});
+
 
 app.get('/js/messagePost.js', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'js', 'messagePost.js'));

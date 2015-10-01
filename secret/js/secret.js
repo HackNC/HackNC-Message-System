@@ -10,17 +10,14 @@ socket.on('message', function(msg){
 });
 
 demoVoice = function(text) {
-	meSpeak.speak(text, {"speed":125});
+	meSpeak.speak(text, {"speed":125, "variant":"f5"});
 }
 
 $(function(){
 	$("#s").characterCounter({
-		limit: 120
-	})
+	});
 	$("#m").characterCounter({
-		limit: 200
-	})
+	});
 	$("#v").characterCounter({
-		limit: 200
-	})
+	});
 });
