@@ -2,6 +2,7 @@ var app = require('express')();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+io.set('origins', '*:*');
 var secret = require('./secret.json');
 var fs = require("fs");
 // Google push
@@ -55,14 +56,14 @@ app.get('/js/arrive.js', function(req, res){
 app.get('/reg', function(req, res) {
 	res.set("Content-Type", "text/plain")
 	res.send('id: ' + req.query.id);
-	if (req.query.platform == 'google') {
+	if (req.query.platform == 'Android') {
 		regIDs.google[req.query.id] = true;
 		fs.writeFile('regids.txt', JSON.stringify(regIDs),  function(err) {
 			if (err) {
 				console.error("failed to write json");
 			}
 		});
-	} else if (req.query.platform == 'ios') {
+	} else if (req.query.platform == 'iOS') {
 		regIDs.ios[req.query.id] = true;
 		fs.writeFile('regids.txt', JSON.stringify(regIDs),  function(err) {
 			if (err) {
@@ -142,6 +143,6 @@ app.get('/archive', function(req, res) {
 	res.send(JSON.stringify(messageArchive, null, '\t'));
 });
 
-http.listen(9001, function(){
+http.listen(80, function(){
   console.log('listening on *:80');
 });

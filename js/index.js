@@ -1,4 +1,4 @@
-var socket = io.connect('159.203.73.64:9001');
+var socket = io.connect('159.203.73.64');
 
 socket.on('message', function(msg){
 	console.log(msg);
