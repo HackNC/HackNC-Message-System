@@ -19,6 +19,7 @@ var apnConnection = new apn.Connection(options);
 // Registered IDs
 var regIDs = JSON.parse(fs.readFileSync('regids.txt'));
 var messageArchive = JSON.parse(fs.readFileSync('archive.txt'));
+var drafts = JSON.parse(fs.readFileSync('drafts.txt'));
 
 //files and stuff
 app.get('/', function(req, res){
@@ -109,55 +110,98 @@ io.on('connection', function(socket){
   socket.on('message', function(msg){
 	console.log("message:", msg);
 	if (msg.pass === secret.pass) {
-		// delete pass
-		delete msg['pass'];
-		io.emit("message", msg);
-		msg.id = makeID();
-		notificate = new gcm.Message({
-			data: {
-				id: msg.id
-			},
-			// remove the `notification` stuff to get a silent push.
-			notification: {
-				title: msg.subject,
-				body: msg.message
+		if (msg.type === "message") {
+			// delete pass
+			
+			delete msg['pass'];
+			io.emit("message", msg);
+			if (msg.phones) {
+				console.log("notified phones");
+				msg.id = makeID();
+				notificate = new gcm.Message({
+					data: {
+						id: msg.id
+					},
+					// remove the `notification` stuff to get a silent push.
+					notification: {
+						title: msg.subject,
+						body: msg.message
+					}
+				});
+				// Send GCM stuff
+				sender.send(notificate, Object.keys(regIDs.google), 5, function(err, result) {
+					if (err) { console.error("send error", err);return;}
+					console.log("send result", result);
+				});
+				// Apple push notifications
+				for (var id in regIDs.ios) {
+				  var myDevice = new apn.Device(id);
+				  // do push
+				  var note = new apn.Notification();
+					note.alert = {
+						'title': msg.subject,
+					  'body': msg.message
+					};
+					apnConnection.pushNotification(note, myDevice);
+				}
+			} else {
+				console.log("did not nofity phones");
 			}
-		});
-		// Send GCM stuff
-		sender.send(notificate, Object.keys(regIDs.google), 5, function(err, result) {
-			if (err) { console.error("send error", err);return;}
-			console.log("send result", result);
-		});
-		// Apple push notifications
-		for (var id in regIDs.ios) {
-		  var myDevice = new apn.Device(id);
-		  // do push
-		  var note = new apn.Notification();
-			note.alert = {
-				'title': msg.subject,
-			  'body': msg.message
-			};
-			apnConnection.pushNotification(note, myDevice);
+			// Archive message
+			messageArchive.push(msg);
+			fs.writeFile('archive.txt', JSON.stringify(messageArchive),  function(err) {
+				if (err) {
+					console.error("failed to write json");
+				}
+			});
+		} else if (msg.type === "draft") {
+			console.log(msg);
+			// delete pass
+			delete msg['pass'];
+			drafts = msg.drafts;
+			fs.writeFile('drafts.txt', JSON.stringify(drafts),  function(err) {
+				if (err) {
+					console.error("failed to write json");
+				}
+			});
+			io.emit("draft", msg);
 		}
-		// Archive message
-		messageArchive.push(msg);
-		fs.writeFile('archive.txt', JSON.stringify(messageArchive),  function(err) {
-			if (err) {
-				console.error("failed to write json");
-			}
-		});
 	} else {
 		console.error("invalid password");
 		socket.emit("message", {'error':"invalid password"});
 	};
 	
   });
+  socket.on('draft', function(msg) {
+		if (msg.pass === secret.pass) {
+			console.log(msg);
+			// delete pass
+			delete msg['pass'];
+			drafts = msg.drafts;
+			s.writeFile('drafts.txt', JSON.stringify(drafts),  function(err) {
+				if (err) {
+					console.error("failed to write json");
+				}
+			});
+			
+			io.emit("draft", msg);
+		} else {
+			console.error("invalid password");
+			socket.emit("message", {'error':"invalid password"});
+		}
+	});
+  
 });
 
 //archive
 app.get('/archive', function(req, res) {
 	res.set("Content-Type", "text/plain")
 	res.send(JSON.stringify(messageArchive, null, '\t'));
+});
+
+app.get('/drafts', function(req, res) {
+	res.set("Content-Type", "text/plain")
+	res.send(JSON.stringify(drafts, null, '\t'));
 });
 
 http.listen(80, function(){

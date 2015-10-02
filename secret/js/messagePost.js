@@ -38,7 +38,9 @@ var messagePost = function() {
 	  subject: $('#s').val(),
 	  pass: $('#pass').val(),
 	  voice: $('#v').val(),
-	  level: $('input:radio[name=level]:checked').val()
+	  level: $('input:radio[name=level]:checked').val(),
+	  phones: $('#p').attr('checked');
+	  type: "message"
 	});
 	$('#m').val("");
 	$('#s').val(""); 
@@ -47,13 +49,6 @@ var messagePost = function() {
 };
 
 var addDraft = function() {
-  /*socket.emit('draft', {
-    message: $('#m').val(),
-	  subject: $('#s').val(),
-	  pass: $('#pass').val(),
-	  level: $('input:radio[name=level]:checked').val()
-	});*/
-
 	nextDraft = {
 		message: $('#m').val(),
 		subject: $('#s').val(),
@@ -61,15 +56,26 @@ var addDraft = function() {
 		level: $('input:radio[name=level]:checked').val()
 	};
 	drafts.push(nextDraft);
-	updateDrafts();
+	socket.emit('message', {
+		pass: $('#pass').val(),
+		drafts: drafts,
+		type: "draft"
+	});
+	updateDrafts(false);
 	$('#m').val("");
 	$('#s').val(""); 
 	$('#v').val(""); 
+	
 }
 
 deleteDraft = function(i) {
 	drafts.splice(i, 1);
-	updateDrafts();
+	socket.emit('message', {
+		pass: $('#pass').val(),
+		drafts: drafts,
+		type: "draft"
+	});
+	updateDrafts(false);
 }
 
 var useDraft = function(i) {
@@ -78,10 +84,21 @@ var useDraft = function(i) {
 	$('#v').val(drafts[i].voice); 
 }
 
-function updateDrafts() {
+function updateDrafts(server) {
+	//console.log("updating drafts");
+	if (server) {
+		$.getJSON("http://159.203.73.64/drafts" , function(data) {
+			drafts = data;
+		});
+	}
 	hizzle = "";
 	for (i = 0; i < drafts.length; i++) {
 		hizzle = messageTemplate.format("hacknc_panel", escapeHtml(drafts[i].subject), escapeHtml(drafts[i].message), escapeHtml(drafts[i].voice)) + "<a href='javascript:useDraft(" +  i  + ")' class='btn btn-primary' id='addDraft" + i + "'>Use this draft</a> <a href='javascript:deleteDraft(" +  i  + ")' class='btn btn-primary' id='deleteDraft" + i + "'>Delete this draft</a>" + hizzle;
 	}
 	$("#drafts").html(hizzle);
 }
+
+$(document).mouseenter(function() {
+	//I'm sorry
+	updateDrafts(true);
+});

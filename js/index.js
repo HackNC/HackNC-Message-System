@@ -95,7 +95,7 @@ var init = function() {
 
 }
 
-var populateSchedule = function(schedule) {	
+var populateSchedule = function() {	
 	var date = new Date(2015, 9, 10, 8, 59);
 	var day = '';
 	var $schedule = $('#schedule-list');
@@ -120,7 +120,9 @@ var populateSchedule = function(schedule) {
 		// Not HackNC
 		return;
 	}
+	console.log(day);
   // display schedule
+  var hizzler = "" ;
   for (var i = 0; i < schedule.events.length; i++){
   	//////////// This doesn't work yet..................
   	console.log('schedule sorting doesn\'t work yet');
@@ -140,7 +142,8 @@ var populateSchedule = function(schedule) {
         mins[0] < date.getMinutes() &&
         (date.getHours() < 12 && ampm == 'am' || 
         date.getHours >= 12 && ampm == 'pm')) {
-      $schedule.append(scheduleTemplate.format(thisEvent.starttime + " - " + thisEvent.endtime, thisEvent.title));
+		console.log("testing");
+      $schedule.html($schedule.html() + scheduleTemplate.format(thisEvent.starttime + " - " + thisEvent.endtime, thisEvent.title));
     } 
   }
 }
@@ -284,7 +287,7 @@ var schedule = { "events" : [
 	]
 };
 
-populateSchedule(schedule);
+$(function() {populateSchedule()});
 
 
 // function getEvent() {
