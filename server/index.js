@@ -26,6 +26,10 @@ app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, './', 'index.html'));
 });
 
+app.get('/tv', function(req, res){
+  res.sendFile(path.join(__dirname, './', 'tv.html'));
+});
+
 app.get('/js/index.js', function(req, res){
   res.sendFile(path.join(__dirname, './js', 'index.js'));
 });
@@ -70,6 +74,11 @@ app.get('/js/messagePost.js', function(req, res){
 app.get('/js/arrive.js', function(req, res){
   res.sendFile(path.join(__dirname, './secret', 'js', 'messagePost.js'));
 });
+
+app.get('/jquery.textfill.min.js', function(req, res){
+  res.sendFile(path.join(__dirname, './js', 'jquery.textfill.min.js'));
+});
+
 
 app.get('/reg', function(req, res) {
 	res.set("Content-Type", "text/plain")
