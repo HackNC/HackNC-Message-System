@@ -39,7 +39,7 @@ var messagePost = function() {
 	  pass: $('#pass').val(),
 	  voice: $('#v').val(),
 	  level: $('input:radio[name=level]:checked').val(),
-	  phones: $('#p').attr('checked');
+	  phones: $('#p').attr('checked'),
 	  type: "message"
 	});
 	$('#m').val("");
