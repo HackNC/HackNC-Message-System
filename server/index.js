@@ -144,13 +144,17 @@ io.on('connection', function(socket){
 				});
 				// Apple push notifications
 				for (var id in regIDs.ios) {
-				  var myDevice = new apn.Device(id);
-				  // do push
-				  var note = new apn.Notification();
+					var myDevice = new apn.Device(id);
+					
+					// do push
+					var note = new apn.Notification();
 					note.alert = {
 						'title': msg.subject,
 					  'body': msg.message
 					};
+					note.badge = 1;
+					note.sound = "default";
+
 					apnConnection.pushNotification(note, myDevice);
 				}
 			} else {
