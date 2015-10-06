@@ -12,7 +12,7 @@ var sender = new gcm.Sender(googleKey);
 // Apple push
 var apn = require('apn');
 var options = {
-	'gateway': 'gateway.sandbox.push.apple.com' // for testing only delete this for production
+	'gateway': 'gateway.push.apple.com' // production environment
 };
 var apnConnection = new apn.Connection(options);
 
