@@ -50,6 +50,10 @@
 		width: 80%;
 		font-size: 5em;
 	}
+	#m {
+		margin-left: 20%;
+		text-align:center;
+	}
 	body {
 		background: url(http://hacknc.us/images/backgrounds/compressed/3_2048-compressed.jpg) no-repeat center center fixed; 
 		-webkit-background-size: cover;
@@ -113,8 +117,8 @@
   </head>
   <body>
 	<div id="scroller" class="scroller" style="height:10%; text-align:center;"><span>Next Event: Dinner by Cookie Monster</span></div>
-    <div id="blocko" class="message-block"><span class="message" id="message"><span id="m">m</span></div>
-	<div id="schedule" class="schedule"><span>wow<br>much<br>very</span></div>
+    <div id="blocko" class="message-block"><span class="message" id="message"><h3><span id="s">s</span></h3><span id="m">m</span></div>
+	<div id="schedule" class="schedule"><center>loading schedule...</span></div>
 	<div id=tick2 style="height:20%; width:40%"></div>
 	<div class="room" id="room" style="height:20%; width:40%">Welcome to HackNC!</div>
 	<script src="/socket.io/socket.io.js"></script>
@@ -135,13 +139,14 @@
 		if (msg === "refresh") {
 			location.reload(true);
 		} else {
-			var stream = meSpeak.speak(msg, {"speed":125, 'rawdata': true, "variant":"f5"})
+			var stream = meSpeak.speak(msg.voice, {"speed":125, 'rawdata': true, "variant":"f5"})
 			if (!chromaMode){
 				$('#schedule').fadeOut(100);
 				$('#scroller').slideDown(700);
 			}
 			$('#blocko').fadeIn(2000);
-			$('#message').text(msg);
+			$('#s').text(msg.subject);
+			$('#m').text(msg.message);
 			$('#blocko').textfill({maxFontPixels:0});
 			document.getElementById('audio').play();
 			for (var i=0; i<timeouts.length; i++) {
@@ -149,7 +154,7 @@
 			}
 			setTimeout(function(){
 				meSpeak.play(stream);
-			}, 1500);
+			}, 2200);
 			if (!chromaMode){
 				timeouts.push(setTimeout(function(){
 					$('#blocko').fadeOut(2000);

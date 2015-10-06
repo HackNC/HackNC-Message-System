@@ -30,6 +30,10 @@ app.get('/tv', function(req, res){
   res.sendFile(path.join(__dirname, './', 'tv.html'));
 });
 
+app.get('/s.ogg', function(req, res){
+  res.sendFile(path.join(__dirname, './', 's.ogg'));
+});
+
 app.get('/js/index.js', function(req, res){
   res.sendFile(path.join(__dirname, './js', 'index.js'));
 });
