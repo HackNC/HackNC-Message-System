@@ -43,7 +43,7 @@
 		#schedule-list, #m{
 			font-size: 4vmin;
 			min-height: 50vh;
-			background-color : rgba(255,255,255,0.95);
+			background-color : rgba(255,255,255,0.75);
 		}
 		
 		#schedule-list {
@@ -90,6 +90,7 @@
 		position:absolute;
 		right:0;
 		bottom:0;
+		font-size: 7vmin;
 		color:rgba(255,255,255,0.9);
 		font-family: 'Source Code Pro';
 		-webkit-text-stroke: 1px black;
@@ -107,6 +108,7 @@
 		position:absolute;
 		left:0;
 		bottom:0;
+		font-size: 7vmin;
 		color:rgba(255,255,255,0.9);
 		font-family: 'Source Code Pro';
 		-webkit-text-stroke: 1px black;
@@ -118,6 +120,11 @@
 		   1px 1px 0 #000;
 	}
 		
+	#null {
+		width: 0;
+		height: 0;
+		opacity: 0;
+	}
 		/*
 		
 		h1, h2, h3, div.panel-body {
@@ -276,8 +283,8 @@
 	</style>-->
   </head>
   <body>
+	<div id="null"></div>
 	<div id="scroller" class="scroller" style="height:10%; text-align:center;"><span>Next Event: Dinner by Cookie Monster</span></div>
-    
 	<div class="container">
 		<div id="schedule" class="schedule row">
 			<div class="panel panel-primary hacknc-panel">
@@ -356,9 +363,9 @@
 	<script>
 		var cookieRoom = document.cookie.replace(/(?:(?:^|.*;\s*)room\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 		if (cookieRoom) {
-			$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + cookieRoom +"</span>")//.textfill({maxFontPixels:0});
+			$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + cookieRoom +"</span>")
 		} else {
-			$("#room").html("<span style='position: absolute;bottom:0;'>Welcome&nbsp;to&nbsp;HackNC</span>")//.textfill({maxFontPixels:0});			
+			$("#room").html("<span style='position: absolute;bottom:0;'>Welcome&nbsp;to&nbsp;HackNC</span>")		
 		}
 		$(document).keydown(function(event) {
 			if (event.which===82) {
@@ -415,7 +422,7 @@
 		if (seconds<=9)
 			seconds="0"+seconds
 		var ctime=hours+":"+minutes+":"+seconds+"&nbsp;"+dn
-		thelement.innerHTML="<span style='position: absolute;bottom:0;'>" + ctime + "</span>";
+		thelement.innerHTML="<span style='position: absolute;bottom:0;right:0;'>" + ctime + "</span>";
 		//$("#tick2").textfill({maxFontPixels:0});
 		setTimeout("show2()",1000)
 		}
@@ -512,11 +519,10 @@
 		
 		function setBackground() {
 			kittenNumber = (Math.floor(Math.random() * 100) + window.innerWidth)
-			var img = new Image();
-			setTimeout(function(kN) {
-				$("body").css("background-image", "url(http://placekitten.com/" + kN + "/" + kN + ")");
-			}(kittenNumber), 1000);
-			img.src = "http://placekitten.com/" + kittenNumber + "/" + kittenNumber			
+			setTimeout(function() {
+				$("body").css("background-image", "url(http://placekitten.com/" + kittenNumber + "/" + kittenNumber + ")");
+			}, 1000);
+			$("#null").css("background-image", "url(http://placekitten.com/" + kittenNumber + "/" + kittenNumber + ")");		
 			/*if (!chromaMode){
 				$("body").css("background-image", "url(" + backgrounds[Math.floor(Math.random() * backgrounds.length)] + ")");
 			} else {
