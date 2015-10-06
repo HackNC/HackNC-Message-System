@@ -518,7 +518,7 @@
 		
 		
 		function setBackground() {
-			kittenNumber = (Math.floor(Math.random() * 100) + window.innerWidth)
+			kittenNumber = (Math.floor(Math.random() * 100 + window.innerWidth/2))
 			setTimeout(function() {
 				$("body").css("background-image", "url(http://placekitten.com/" + kittenNumber + "/" + kittenNumber + ")");
 			}, 1000);
