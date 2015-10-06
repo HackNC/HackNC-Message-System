@@ -27,9 +27,18 @@ var entityMap = {
     });
   }
 
+ var refresher = function() {
+	socket.emit('message', {
+    message: "refresh",
+	  pass: $('#pass').val(),
+	  phones: false,
+	  type: "message"
+	});
+ }
+  
 var messagePost = function() {
-  if ($("#m").val() == '' || $("#s").val() == '') {
-    alert("Must fill out subject and message. Not sent.");
+  if ($("#m").val() == '' || $("#s").val() == '' || $("#v").val() == '') {
+    alert("Must fill out subject, message. Especially voice. Not sent.");
     return false;
   }
   

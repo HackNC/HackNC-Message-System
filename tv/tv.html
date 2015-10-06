@@ -15,7 +15,9 @@
 	<style>
 		.container {
 			position: relative;
+			top: 12vh;
 			word-wrap: break-word;
+			
 		}
 	
 		#blocko {
@@ -23,10 +25,12 @@
 			top:0;
 			width: 100%;
 			z-index: -5;
-			visibility: hidden;
-			white-space: pre-wrap;
+			display: none;
 		}
 	
+		.panel {
+			background-color: rgba(0,0,0,0);
+		}
 	
 		#schedule {
 			transition-duration: 0.5s;
@@ -39,10 +43,20 @@
 		#schedule-list, #m{
 			font-size: 4vmin;
 			min-height: 50vh;
+			background-color : rgba(255,255,255,0.95);
+		}
+		
+		#schedule-list {
+			min-height: 65vh;
+		}
+		
+		#m {
+			white-space: pre-wrap;
 		}
 		
 		.panel-heading {
 			font-size: 5vmin;
+			background-color: rgba(110, 134, 140,0.8);
 		}
 		
 		body {
@@ -52,7 +66,61 @@
 
 		}
 		
-		/*h1, h2, h3, div.panel-body {
+		.scroller {
+			display:block;
+			display:none;
+			background-color:rgba(110, 134, 140,0.8);
+			position:absolute;
+			left:0;
+			top:0;
+			width:100%;
+			color:rgba(255,255,255);
+			font-weight:400;
+		}
+		
+		.event {
+			padding-left: 4em;
+			text-indent:-4em;
+			display: inline-block;
+		}
+		 
+		
+	#tick2 {
+		display:block;
+		position:absolute;
+		right:0;
+		bottom:0;
+		color:rgba(255,255,255,0.9);
+		font-family: 'Source Code Pro';
+		-webkit-text-stroke: 1px black;
+		vertical-align: bottom;
+		text-shadow:
+		   3px 3px 0 rgba(0,0,0,0.5),
+		 -1px -1px 0 #000,  
+		  1px -1px 0 #000,
+		  -1px 1px 0 #000,
+		   1px 1px 0 #000;
+	}
+	
+	.room {
+		display:block;
+		position:absolute;
+		left:0;
+		bottom:0;
+		color:rgba(255,255,255,0.9);
+		font-family: 'Source Code Pro';
+		-webkit-text-stroke: 1px black;
+		text-shadow:
+		   3px 3px 0 rgba(0,0,0,0.5),
+		 -1px -1px 0 #000,  
+		  1px -1px 0 #000,
+		  -1px 1px 0 #000,
+		   1px 1px 0 #000;
+	}
+		
+		/*
+		
+		h1, h2, h3, div.panel-body {
 		  font-size: 6em;
 		}
 		 
@@ -67,6 +135,12 @@
 		 
 		.list-group-item-text {
 		  font-size: .75em;
+		}
+		
+		.event {
+			padding-left: 1.5em;
+			text-indent:-1.5em;
+			display: inline-block;
 		}
 		 
 		nav li {
@@ -241,7 +315,7 @@
 	  meSpeak.loadVoice('en-us.json');
 	  socket.on('message', function(msg){
 		console.log(msg);
-		if (msg === "refresh") {
+		if (msg.message === "refresh") {
 			location.reload(true);
 		} else {
 			var stream = meSpeak.speak(msg.voice, {"speed":125, 'rawdata': true, "variant":"f5"})
@@ -263,10 +337,13 @@
 			}, 2200);
 			if (!chromaMode){
 				timeouts.push(setTimeout(function(){
-					$('#blocko').fadeOut(2000);
-					$('#schedule').fadeIn(2000);
-					$('#scroller').fadeOut(2000);
-				}, 300000));
+					$('#blocko').fadeOut(1000);
+					$('#schedule').css("left", "0vw");
+					timeouts.push(setTimeout(function(){
+						$('#schedule').css("opacity", "1");
+					}, 1000));
+					$('#scroller').slideUp(700);
+				}, 5000));//300000));
 			} else {
 				timeouts.push(setTimeout(function(){
 					$('#blocko').fadeOut(2000);
@@ -304,7 +381,9 @@
 			}
 	  });
 	  $(document).ready(function(){
-		$("#scroller")//.textfill({maxFontPixels:0})
+		$("#scroller").textfill({maxFontPixels:0});
+		scheduleLoad("http://hacknc.com/schedule/json/student.json");
+		setBackground();
 	  });
 	</script>
 	<script>
@@ -347,7 +426,7 @@
 		//TODO: Externalize :P
 		var backgrounds= ["http://fall2014.hacknc.com/images/backgrounds/compressed/0_2048-compressed.jpg"]
 		
-		function parseDate(event) {
+		function parseEvent(event) {
 			stringDate = "2015/10/09 ";
 			if (event.date === "Saturday") {
 				stringDate = "2015/10/10 "
@@ -355,37 +434,31 @@
 				stringDate = "2015/10/11 ";
 			}
 			stringDate += event.starttime;
-			return new Date(stringDate);
+			theDate = new Date(stringDate);
+			eventString = event.title;
+			room = event.room;
+			if (room != "") {
+				eventString += " (" + room + ")";
+			}
+			toReturn = new Array(2);
+			toReturn[0] = theDate;
+			toReturn[1] = eventString;
+			return toReturn;
 		}
 		
-		var schedule = [[new Date("October 25, 9999 00:00:00"), "End of the universe"]];
-		/*[
-			[new Date("October 25, 2015 11:00:00"), "check in opens"],
-			[new Date("October 25, 2015 11:00:01"), "Career Fair"],
-			[new Date("October 25, 2015 11:30:00"), "lunch with sponsors"],
-			[new Date("October 25, 2015 12:30:00"), "Opening Ceremony (Carroll 111)"],
-			[new Date("October 25, 2015 13:30:00"), "hacking begins!"],
-			[new Date("October 25, 2015 13:30:01"), "Career Fair continues"],
-			[new Date("October 25, 2015 14:00:01"), "HackVR! (FB009)"],
-			[new Date("October 25, 2015 15:00:00"), "Microsoft - Analytics Web APIs (FB009)"],
-			[new Date("October 25, 2015 16:00:00"), "Google - Mesa Tech Talk (FB009)"],
-			[new Date("October 25, 2015 17:00:00"), "Square - Technical Interviewing (FB009)"],
-			[new Date("October 25, 2015 18:00:00"), "Square - Dinner for the ladies (FB009)"],
-			[new Date("October 25, 2015 18:00:01"), "dinner for the everyone (Brooks lobby)"],
-			[new Date("October 25, 2015 19:00:01"), "EMC tech talk (FB009)"],
-			[new Date("October 25, 2015 20:00:01"), "Traditional Smash Tourney (Sitterson Lobby)"],
-			[new Date("October 25, 2015 21:30:01"), "TowerFall Tourney (Sitterson Lobby)"],
-			[new Date("October 25, 2015 22:15:01"), "'Experimental' Smash Tourney (Sitterson Lobby)"],
-			[new Date("October 26, 2015 00:00:01"), "SPECIAL EVENT"],
-			[new Date("October 26, 2015 01:00:00"), "Nap room opens (FB009)"],
-			[new Date("October 26, 2015 07:00:00"), "Breakfast (Brooks lobby)"],
-			[new Date("October 26, 2015 11:30:00"), "Lunch (Brooks lobby)"],
-			[new Date("October 26, 2015 12:00:00"), "Hacking ends"],
-			[new Date("October 26, 2015 12:45:00"), "Expo (Sitterson Lobby)"],
-			[new Date("October 26, 2015 14:30:00"), "Closing ceremony (Carroll 111)"],
-			[new Date("October 26, 2015 16:00:00"), "Time to go... :("],
-			[new Date("October 26, 2015 16:00:00"), "HackNC or something maybe"]		
-	]*/
+
+		
+		var schedule = [[new Date("October 7, 2015 00:00:00"), "End of the universe"]];
+		
+		var scheduleLoad = function(url) {
+			//get JSON
+			$.getJSON(url, function(data) {
+				for (var i = 0; i < data.events.length; i++) {
+					thisEvent = data.events[i];
+					schedule.push(parseEvent(thisEvent));
+				}
+			});
+		};
 		
 		function getEvent() {
 			var currentTime = new Date();
@@ -416,25 +489,39 @@
 		
 		setInterval(function(){
 			events = getEvent();
-			document.getElementById("scroller").innerHTML = "<span>" + events[0] + "</span>";
-			//$("#scroller").textfill({maxFontPixels:0});
+			
 			sString = "";
+			cString = "";
 			for (i = 0; i < Math.min(8, events.length); i++) {
+					sString += "<span class='event'>";
 					sString += events[i];
-					sString += "<br>";
+					sString += "</span><br>";
+					if (i < 2) {
+						cString += events[i];
+						cString += "<br>";
+					}
 			}
-			document.getElementById("schedule-list").innerHTML = "<span class=message>" + sString + "</span>";
+			document.getElementById("schedule-list").innerHTML = "<span class='message'>" + sString + "</span>";
+			document.getElementById("scroller").innerHTML = "<span class='message'>" + cString + "</span>";
+			$("#scroller").textfill({maxFontPixels:0});
 			//$("#schedule-list").textfill({maxFontPixels:0});
 		}, 1000);
 		
-		setInterval(setBackground(), 1800000);
+		setInterval(setBackground, 5000);
+		
 		
 		function setBackground() {
-			if (!chromaMode){
+			kittenNumber = (Math.floor(Math.random() * 100) + window.innerWidth)
+			var img = new Image();
+			setTimeout(function(kN) {
+				$("body").css("background-image", "url(http://placekitten.com/" + kN + "/" + kN + ")");
+			}(kittenNumber), 1000);
+			img.src = "http://placekitten.com/" + kittenNumber + "/" + kittenNumber			
+			/*if (!chromaMode){
 				$("body").css("background-image", "url(" + backgrounds[Math.floor(Math.random() * backgrounds.length)] + ")");
 			} else {
 				$("body").css("background-image", "url(./green.png)");
-			}
+			}*/
 		}
 		
 		</script>
