@@ -4,6 +4,92 @@
     <title>HackNC Messages</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:900' rel='stylesheet' type='text/css'>
+	<link rel="icon" href="https://www.hacknc.com/images/favicon.ico" type="image/x-icon" />
+	
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material-fullpalette.min.css" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css" />
+	<!--Import HackNC overrides-->
+	<link type="text/css" rel="stylesheet" href="https://www.hacknc.com/css/hacknc.css" />
+	<link type="text/css" rel="stylesheet" href="http://tv.hacknc.com/css/tv.css" />
+	<style>
+		.container {
+			position: relative;
+			word-wrap: break-word;
+		}
+	
+		#blocko {
+			position: absolute;
+			top:0;
+			width: 100%;
+			z-index: -5;
+			visibility: hidden;
+			white-space: pre-wrap;
+		}
+	
+	
+		#schedule {
+			transition-duration: 0.5s;
+			position: relative;
+			opacity: 1;
+			left: 0vw;
+			top: 0;
+		}
+		
+		#schedule-list, #m{
+			font-size: 4vmin;
+			min-height: 50vh;
+		}
+		
+		.panel-heading {
+			font-size: 5vmin;
+		}
+		
+		body {
+			overflow-x: hidden;
+			overflow-y: hidden;
+			background-size: cover;
+
+		}
+		
+		/*h1, h2, h3, div.panel-body {
+		  font-size: 6em;
+		}
+		 
+		.panel-heading h1 {
+		  font-size: 3em;
+		}
+		 
+		.list-group .list-group-item .list-group-item-heading {
+		  font-size: 0.4em;
+		  margin-top: .2em;
+		}
+		 
+		.list-group-item-text {
+		  font-size: .75em;
+		}
+		 
+		nav li {
+		  font-size: 4.2em;
+		  margin-top: .1em;
+		  margin-bottom: .1em;
+		}
+		 
+		html {
+		  height: 100%;
+		}
+		 
+		body {
+		  height: 100%;
+		  background-image: url(../images/hacknc.png);
+		  background-repeat: no-repeat;
+		  background-position: center center;
+		  background-size: contain;
+		  overflow-x: hidden;
+		}*/
+	</style>
+	<!--<link type="text/css" rel="stylesheet" href="css/tv.css" />
+	
 	<style>
 	* {
 		margin:0px;
@@ -113,12 +199,31 @@
 		   1px 1px 0 #000;
 	}
 	
-	</style>
+	</style>-->
   </head>
   <body>
 	<div id="scroller" class="scroller" style="height:10%; text-align:center;"><span>Next Event: Dinner by Cookie Monster</span></div>
-    <div id="blocko" class="message-block"><span class="message" id="message"><h3><span id="s">s</span></h3><span id="m">m</span></div>
-	<div id="schedule" class="schedule"><center>loading schedule...</span></div>
+    
+	<div class="container">
+		<div id="schedule" class="schedule row">
+			<div class="panel panel-primary hacknc-panel">
+				<div class="panel-heading">
+					Coming up soon...
+				</div>
+				<div class="panel-body list-group" id="schedule-list">
+				<center>loading schedule...</center>
+				</div>
+			</div>
+		</div>
+		
+		<div id="blocko" class="message-block row">
+			<div class="panel panel-primary hacknc-panel" id="message">
+				<div class="panel-heading" id="s">s</div>
+				<div class="panel-body list-group" id="m">m</div>
+			</div>
+		</div>
+	</div>
+	
 	<div id=tick2 style="height:20%; width:40%"></div>
 	<div class="room" id="room" style="height:20%; width:40%">Welcome to HackNC!</div>
 	<script src="/socket.io/socket.io.js"></script>
@@ -141,13 +246,14 @@
 		} else {
 			var stream = meSpeak.speak(msg.voice, {"speed":125, 'rawdata': true, "variant":"f5"})
 			if (!chromaMode){
-				$('#schedule').fadeOut(100);
+				$('#schedule').css("left", "100vw");
+				$('#schedule').css("opacity", "0");
 				$('#scroller').slideDown(700);
 			}
 			$('#blocko').fadeIn(2000);
 			$('#s').text(msg.subject);
 			$('#m').text(msg.message);
-			$('#blocko').textfill({maxFontPixels:0});
+			//$('#blocko').textfill({maxFontPixels:0});
 			document.getElementById('audio').play();
 			for (var i=0; i<timeouts.length; i++) {
 			  clearTimeout(timeouts[i]);
@@ -168,19 +274,19 @@
 			}
 		}
 	  });
-	$('#room').textfill({maxFontPixels:0});
+	//$('#room').textfill({maxFontPixels:0});
 	</script>
 	<script>
 		var cookieRoom = document.cookie.replace(/(?:(?:^|.*;\s*)room\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 		if (cookieRoom) {
-			$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + cookieRoom +"</span>").textfill({maxFontPixels:0});
+			$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + cookieRoom +"</span>")//.textfill({maxFontPixels:0});
 		} else {
-			$("#room").html("<span style='position: absolute;bottom:0;'>Welcome&nbsp;to&nbsp;HackNC</span>").textfill({maxFontPixels:0});			
+			$("#room").html("<span style='position: absolute;bottom:0;'>Welcome&nbsp;to&nbsp;HackNC</span>")//.textfill({maxFontPixels:0});			
 		}
 		$(document).keydown(function(event) {
 			if (event.which===82) {
 				var roomName = window.prompt("What room is this?", "SN014").replace(" ", "&nbsp;");
-				$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + roomName +"</span>").textfill({maxFontPixels:0});
+				$("#room").html("<span style='position: absolute;bottom:0;'>You're&nbsp;in&nbsp;" + roomName +"</span>")//.textfill({maxFontPixels:0});
 				document.cookie = "room=" + roomName
 				$(backgrounds).each(function(){
 					$('<img/>')[0].src = this;
@@ -198,7 +304,7 @@
 			}
 	  });
 	  $(document).ready(function(){
-		$("#scroller").textfill({maxFontPixels:0})
+		$("#scroller")//.textfill({maxFontPixels:0})
 	  });
 	</script>
 	<script>
@@ -231,7 +337,7 @@
 			seconds="0"+seconds
 		var ctime=hours+":"+minutes+":"+seconds+"&nbsp;"+dn
 		thelement.innerHTML="<span style='position: absolute;bottom:0;'>" + ctime + "</span>";
-		$("#tick2").textfill({maxFontPixels:0});
+		//$("#tick2").textfill({maxFontPixels:0});
 		setTimeout("show2()",1000)
 		}
 		window.onload=show2;
@@ -241,7 +347,19 @@
 		//TODO: Externalize :P
 		var backgrounds= ["http://fall2014.hacknc.com/images/backgrounds/compressed/0_2048-compressed.jpg"]
 		
-		var schedule = [
+		function parseDate(event) {
+			stringDate = "2015/10/09 ";
+			if (event.date === "Saturday") {
+				stringDate = "2015/10/10 "
+			} else if (event.date === "Sunday") {
+				stringDate = "2015/10/11 ";
+			}
+			stringDate += event.starttime;
+			return new Date(stringDate);
+		}
+		
+		var schedule = [[new Date("October 25, 9999 00:00:00"), "End of the universe"]];
+		/*[
 			[new Date("October 25, 2015 11:00:00"), "check in opens"],
 			[new Date("October 25, 2015 11:00:01"), "Career Fair"],
 			[new Date("October 25, 2015 11:30:00"), "lunch with sponsors"],
@@ -267,7 +385,7 @@
 			[new Date("October 26, 2015 14:30:00"), "Closing ceremony (Carroll 111)"],
 			[new Date("October 26, 2015 16:00:00"), "Time to go... :("],
 			[new Date("October 26, 2015 16:00:00"), "HackNC or something maybe"]		
-	]
+	]*/
 		
 		function getEvent() {
 			var currentTime = new Date();
@@ -281,15 +399,15 @@
 				var hoursTil = (schedule[j][0].getTime() - currentTime.getTime()) / 1000 / 60 / 60;
 				if (hoursTil > 1.5) {
 					hoursTil = Math.round(hoursTil);
-					toReturn.push(hoursTil + " hours until " + schedule[j][1]);
+					toReturn.push(hoursTil + " hours&mdash;" + schedule[j][1]);
 				} else {
 					minutesTil = hoursTil * 60;
 					if (minutesTil > 1.5) {
 						minutesTil = Math.round(minutesTil);
-						toReturn.push(minutesTil + " minutes until " + schedule[j][1]);
+						toReturn.push(minutesTil + " minutes - " + schedule[j][1]);
 					} else {
 						secondsTil = Math.round(minutesTil * 60);
-						toReturn.push(secondsTil + " second(s) until " + schedule[j][1]);
+						toReturn.push(secondsTil + " second(s) - " + schedule[j][1]);
 					}
 				}
 			}
@@ -299,14 +417,14 @@
 		setInterval(function(){
 			events = getEvent();
 			document.getElementById("scroller").innerHTML = "<span>" + events[0] + "</span>";
-			$("#scroller").textfill({maxFontPixels:0});
+			//$("#scroller").textfill({maxFontPixels:0});
 			sString = "";
 			for (i = 0; i < Math.min(8, events.length); i++) {
 					sString += events[i];
 					sString += "<br>";
 			}
-			document.getElementById("schedule").innerHTML = "<span class=message style='margin-left:10%'>" + sString + "</span>";
-			$("#schedule").textfill({maxFontPixels:0});
+			document.getElementById("schedule-list").innerHTML = "<span class=message>" + sString + "</span>";
+			//$("#schedule-list").textfill({maxFontPixels:0});
 		}, 1000);
 		
 		setInterval(setBackground(), 1800000);
